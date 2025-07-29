@@ -1,5 +1,5 @@
 // Arquivo: routes/auth.js
-// MODIFICADO: Tratamento de erros reforçado.
+// MODIFICADO: Adicionados console.log para diagnóstico.
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -17,35 +17,42 @@ router.post(
     check('password', 'Por favor, insira uma senha com 6 ou mais caracteres').isLength({ min: 6 }),
   ],
   async (req, res) => {
+    console.log('DIAGNÓSTICO: Rota /register chamada.');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('DIAGNÓSTICO: Erro de validação no registro.', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { name, email, password } = req.body;
 
     try {
+      console.log(`DIAGNÓSTICO: Procurando usuário com email: ${email}`);
       let user = await User.findOne({ email });
       if (user) {
+        console.log('DIAGNÓSTICO: Usuário já existe.');
         return res.status(400).json({ msg: 'Usuário já existe' });
       }
+      console.log('DIAGNÓSTICO: Usuário não encontrado, criando novo.');
 
       user = new User({ name, email, password });
 
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
+      console.log('DIAGNÓSTICO: Senha criptografada.');
 
-      // Etapa crucial: salvar o usuário no banco de dados
       await user.save();
+      console.log(`DIAGNÓSTICO: Usuário ${user.email} salvo no banco de dados com ID: ${user.id}`);
 
       const payload = { user: { id: user.id } };
 
       jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 360000 }, (err, token) => {
         if (err) throw err;
+        console.log('DIAGNÓSTICO: Token JWT gerado com sucesso.');
         res.json({ token });
       });
     } catch (err) {
-      console.error('ERRO NO REGISTRO:', err.message);
+      console.error('ERRO CRÍTICO NO REGISTRO:', err.message);
       res.status(500).send('Erro no servidor');
     }
   }
@@ -59,6 +66,7 @@ router.post(
     check('password', 'Senha é obrigatória').exists(),
   ],
   async (req, res) => {
+    console.log('DIAGNÓSTICO: Rota /login chamada.');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -67,24 +75,30 @@ router.post(
     const { email, password } = req.body;
 
     try {
+      console.log(`DIAGNÓSTICO: Procurando usuário com email: ${email}`);
       let user = await User.findOne({ email });
       if (!user) {
+        console.log('DIAGNÓSTICO: Usuário não encontrado no login.');
         return res.status(400).json({ msg: 'Credenciais inválidas' });
       }
+      console.log(`DIAGNÓSTICO: Usuário encontrado: ${user.id}. Comparando senhas.`);
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
+        console.log('DIAGNÓSTICO: Senhas não coincidem.');
         return res.status(400).json({ msg: 'Credenciais inválidas' });
       }
+      console.log('DIAGNÓSTICO: Senhas coincidem. Gerando token.');
 
       const payload = { user: { id: user.id } };
 
       jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
         if (err) throw err;
+        console.log('DIAGNÓSTICO: Token de login gerado com sucesso.');
         res.json({ token });
       });
     } catch (err) {
-      console.error('ERRO NO LOGIN:', err.message);
+      console.error('ERRO CRÍTICO NO LOGIN:', err.message);
       res.status(500).send('Erro no servidor');
     }
   }
@@ -92,53 +106,50 @@ router.post(
 
 // @route   POST api/auth/forgot-password
 router.post('/forgot-password', [check('email', 'Email é obrigatório').isEmail()], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  let user; // Declara o usuário aqui para ter acesso no bloco catch
+  console.log('DIAGNÓSTICO: Rota /forgot-password chamada.');
+  let user;
 
   try {
     user = await User.findOne({ email: req.body.email });
     if (!user) {
-      // Nota: Por segurança, não informamos que o usuário não existe.
-      // Apenas retornamos sucesso para não permitir que alguém descubra emails cadastrados.
+      console.log(`DIAGNÓSTICO: Email ${req.body.email} não encontrado para redefinição de senha.`);
       return res.status(200).json({ success: true, msg: 'Se o email estiver em nossa base de dados, um código será enviado.' });
     }
+    console.log(`DIAGNÓSTICO: Usuário ${user.email} encontrado. Gerando código.`);
 
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
     user.passwordResetCode = resetCode;
-    user.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutos
+    user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
+    console.log('DIAGNÓSTICO: Código de redefinição salvo no banco.');
 
     const message = `Você está recebendo este email porque solicitou a redefinição de senha. Seu código de verificação é: ${resetCode}`;
     
-    console.log(`Tentando enviar email para ${user.email}...`);
+    console.log(`DIAGNÓSTICO: Tentando enviar email para ${user.email}...`);
     await sendEmail({
       email: user.email,
       subject: 'VitaLog - Código de Redefinição de Senha',
       message,
     });
-    console.log('Email enviado com sucesso!');
+    console.log('DIAGNÓSTICO: Email enviado com sucesso!');
 
     res.status(200).json({ success: true, msg: 'Email enviado' });
   } catch (err) {
-    // Log do erro detalhado
-    console.error('FALHA AO ENVIAR EMAIL:', err);
+    console.error('ERRO CRÍTICO AO ENVIAR EMAIL:', err);
 
-    // Limpa os campos de redefinição se o envio falhar
     if (user) {
         user.passwordResetCode = undefined;
         user.passwordResetExpires = undefined;
         await user.save();
+        console.log('DIAGNÓSTICO: Campos de redefinição limpos do usuário após erro.');
     }
     
-    res.status(500).send('Erro ao enviar o email. Verifique as credenciais e configurações.');
+    res.status(500).send('Erro ao enviar o email. Verifique as credenciais e configurações no terminal do backend.');
   }
 });
 
 // @route   POST api/auth/reset-password
+// (Sem alterações de diagnóstico, a lógica é direta)
 router.post('/reset-password', [
     check('code', 'Código é obrigatório').not().isEmpty(),
     check('password', 'A nova senha é obrigatória').isLength({ min: 6 }),
@@ -148,26 +159,21 @@ router.post('/reset-password', [
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
     const { code, password, email } = req.body;
-
     try {
         const user = await User.findOne({
             email,
             passwordResetCode: code,
             passwordResetExpires: { $gt: Date.now() },
         });
-
         if (!user) {
             return res.status(400).json({ msg: 'Código inválido ou expirado' });
         }
-
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
         user.passwordResetCode = undefined;
         user.passwordResetExpires = undefined;
         await user.save();
-
         res.status(200).json({ success: true, msg: 'Senha redefinida com sucesso' });
     } catch (err) {
         console.error('ERRO AO RESETAR SENHA:', err.message);

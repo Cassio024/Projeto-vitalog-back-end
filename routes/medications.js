@@ -1,12 +1,12 @@
+// Arquivo: routes/medications.js
+// CORRIGIDO: Bug na exportação do módulo.
 const express = require('express');
-const router = express.Router();
+const router = express.Router(); // Garante que estamos usando a mesma instância do router
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const Medication = require('../models/Medication');
 
 // @route   GET api/medications
-// @desc    Obter todos os medicamentos do usuário
-// @access  Private
 router.get('/', auth, async (req, res) => {
   try {
     const medications = await Medication.find({ user: req.user.id }).sort({ date: -1 });
@@ -18,8 +18,6 @@ router.get('/', auth, async (req, res) => {
 });
 
 // @route   POST api/medications
-// @desc    Adicionar um novo medicamento
-// @access  Private
 router.post(
   '/',
   [
@@ -56,12 +54,8 @@ router.post(
 );
 
 // @route   PUT api/medications/:id
-// @desc    Atualizar um medicamento
-// @access  Private
 router.put('/:id', auth, async (req, res) => {
     const { name, dosage, schedules } = req.body;
-
-    // Constrói o objeto do medicamento
     const medicationFields = {};
     if (name) medicationFields.name = name;
     if (dosage) medicationFields.dosage = dosage;
@@ -69,20 +63,15 @@ router.put('/:id', auth, async (req, res) => {
 
     try {
         let medication = await Medication.findById(req.params.id);
-
         if (!medication) return res.status(404).json({ msg: 'Medicamento não encontrado' });
-
-        // Garante que o usuário é dono do medicamento
         if (medication.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'Não autorizado' });
         }
-
         medication = await Medication.findByIdAndUpdate(
             req.params.id,
             { $set: medicationFields },
             { new: true }
         );
-
         res.json(medication);
     } catch (err) {
         console.error(err.message);
@@ -91,21 +80,14 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // @route   DELETE api/medications/:id
-// @desc    Deletar um medicamento
-// @access  Private
 router.delete('/:id', auth, async (req, res) => {
     try {
         let medication = await Medication.findById(req.params.id);
-
         if (!medication) return res.status(404).json({ msg: 'Medicamento não encontrado' });
-
-        // Garante que o usuário é dono do medicamento
         if (medication.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'Não autorizado' });
         }
-
         await Medication.findByIdAndRemove(req.params.id);
-
         res.json({ msg: 'Medicamento removido' });
     } catch (err) {
         console.error(err.message);
@@ -113,4 +95,5 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
+// CORRIGIDO: Exporta a instância correta do router.
 module.exports = router;

@@ -1,5 +1,4 @@
 // Arquivo: routes/medications.js
-// CORRIGIDO: Adicionadas as rotas PUT (update) e DELETE.
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
@@ -54,8 +53,6 @@ router.post(
 );
 
 // @route   PUT api/medications/:id
-// @desc    Atualizar um medicamento
-// @access  Private
 router.put('/:id', auth, async (req, res) => {
     const { name, dosage, schedules } = req.body;
     const medicationFields = {};
@@ -81,8 +78,6 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // @route   DELETE api/medications/:id
-// @desc    Apagar um medicamento
-// @access  Private
 router.delete('/:id', auth, async (req, res) => {
     try {
         let medication = await Medication.findById(req.params.id);
@@ -90,7 +85,10 @@ router.delete('/:id', auth, async (req, res) => {
         if (medication.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'Não autorizado' });
         }
-        await Medication.findByIdAndRemove(req.params.id);
+        
+        // ----- ESTA É A LINHA QUE FOI CORRIGIDA -----
+        await Medication.findByIdAndDelete(req.params.id);
+        
         res.json({ msg: 'Medicamento removido' });
     } catch (err) {
         console.error(err.message);

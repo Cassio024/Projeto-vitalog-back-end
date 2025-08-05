@@ -1,6 +1,6 @@
 // Arquivo: routes/medications.js
-// CORRIGIDO: Adicionada a importação do express.
-const express = require('express'); // <-- LINHA ADICIONADA
+// CORRIGIDO: Adicionadas as rotas PUT (update) e DELETE.
+const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
@@ -52,5 +52,50 @@ router.post(
     }
   }
 );
+
+// @route   PUT api/medications/:id
+// @desc    Atualizar um medicamento
+// @access  Private
+router.put('/:id', auth, async (req, res) => {
+    const { name, dosage, schedules } = req.body;
+    const medicationFields = {};
+    if (name) medicationFields.name = name;
+    if (dosage) medicationFields.dosage = dosage;
+    if (schedules) medicationFields.schedules = schedules;
+    try {
+        let medication = await Medication.findById(req.params.id);
+        if (!medication) return res.status(404).json({ msg: 'Medicamento não encontrado' });
+        if (medication.user.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'Não autorizado' });
+        }
+        medication = await Medication.findByIdAndUpdate(
+            req.params.id,
+            { $set: medicationFields },
+            { new: true }
+        );
+        res.json(medication);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Erro no Servidor');
+    }
+});
+
+// @route   DELETE api/medications/:id
+// @desc    Apagar um medicamento
+// @access  Private
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        let medication = await Medication.findById(req.params.id);
+        if (!medication) return res.status(404).json({ msg: 'Medicamento não encontrado' });
+        if (medication.user.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'Não autorizado' });
+        }
+        await Medication.findByIdAndRemove(req.params.id);
+        res.json({ msg: 'Medicamento removido' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Erro no Servidor');
+    }
+});
 
 module.exports = router;

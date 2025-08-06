@@ -1,0 +1,102 @@
+[
+  {
+    "medication_name": "Paracetamol",
+    "keywords": ["paracetamol", "tylenol", "dor", "febre", "analgésico"],
+    "content": "O Paracetamol é um analgésico e antitérmico utilizado para aliviar dores de cabeça, dores musculares, febre e outros desconfortos leves a moderados. PRECAUÇÕES: O uso excessivo pode causar danos graves ao fígado. Não exceda a dose máxima diária recomendada. Consulte um médico se a dor ou febre persistirem."
+  },
+  {
+    "medication_name": "Dipirona",
+    "keywords": ["dipirona", "novalgina", "dor", "febre", "cólica"],
+    "content": "A Dipirona é um analgésico e antitérmico, frequentemente usada para dores intensas, febre alta e cólicas. CONTRAINDICAÇÕES: Não deve ser usada por pessoas com alergia à dipirona ou a pirazolonas, nem por grávidas nos primeiros e últimos três meses de gestação. Em alguns países, seu uso é restrito devido a raros riscos de agranulocitose."
+  },
+  {
+    "medication_name": "Ibuprofeno",
+    "keywords": ["ibuprofeno", "advil", "alivium", "anti-inflamatório", "dor", "inflamação"],
+    "content": "O Ibuprofeno é um anti-inflamatório não esteroide (AINE) usado para dor, febre e inflamação, como em casos de artrite, cólicas menstruais e dores musculares. PRECAUÇÕES: Pode causar irritação no estômago; recomenda-se tomar com alimentos. Usar com cautela em pacientes com problemas renais, cardíacos ou histórico de úlcera."
+  },
+  {
+    "medication_name": "Amoxicilina",
+    "keywords": ["amoxicilina", "antibiótico", "infecção", "bactéria"],
+    "content": "A Amoxicilina é um antibiótico da classe das penicilinas, usado para tratar uma vasta gama de infecções bacterianas, como sinusite, pneumonia e infecções urinárias. COMO USAR: É crucial completar todo o ciclo de tratamento prescrito pelo médico, mesmo que os sintomas melhorem antes, para evitar a resistência bacteriana."
+  },
+  {
+    "medication_name": "Azitromicina",
+    "keywords": ["azitromicina", "antibiótico", "infecção", "garganta", "pulmão"],
+    "content": "A Azitromicina é um antibiótico usado para tratar infecções bacterianas respiratórias, de pele e algumas doenças sexualmente transmissíveis. Geralmente, o tratamento é de curta duração (3 a 5 dias). PRECAUÇÕES: Pode interagir com outros medicamentos e deve ser usada com cautela em pacientes com problemas cardíacos ou hepáticos."
+  },
+  {
+    "medication_name": "Losartana",
+    "keywords": ["losartana", "pressão alta", "hipertensão", "aradois"],
+    "content": "A Losartana é um anti-hipertensivo usado para tratar a pressão alta e proteger os rins em pacientes com diabetes tipo 2. COMO USAR: Deve ser tomada regularmente, conforme prescrição, para manter a pressão arterial controlada. Não interrompa o uso sem orientação médica."
+  },
+  {
+    "medication_name": "Hidroclorotiazida",
+    "keywords": ["hidroclorotiazida", "diurético", "pressão alta", "inchaço", "retenção de líquido"],
+    "content": "A Hidroclorotiazida é um diurético (pílula de água) que ajuda a eliminar o excesso de sal e água do corpo. É usada para tratar a pressão alta e o inchaço (edema). PRECAUÇÕES: Pode afetar os níveis de potássio no sangue. O seu médico pode pedir exames de sangue periódicos."
+  },
+  {
+    "medication_name": "Sinvastatina",
+    "keywords": ["sinvastatina", "colesterol", "estatina", "coração"],
+    "content": "A Sinvastatina pertence à classe das estatinas e é usada para reduzir os níveis de colesterol 'mau' (LDL) e triglicerídeos no sangue, ajudando a prevenir doenças cardíacas e derrames. EFEITOS COLATERAIS: Dores musculares inexplicadas devem ser comunicadas ao médico imediatamente."
+  },
+  {
+    "medication_name": "Omeprazol",
+    "keywords": ["omeprazol", "azia", "refluxo", "gastrite", "estômago"],
+    "content": "O Omeprazol é um inibidor da bomba de prótons que reduz a produção de ácido no estômago. É usado para tratar gastrite, refluxo gastroesofágico e úlceras. COMO USAR: Geralmente, deve ser tomado em jejum, pela manhã, para máxima eficácia."
+  },
+  {
+    "medication_name": "Metformina",
+    "keywords": ["metformina", "glifage", "diabetes", "açúcar no sangue", "glicemia"],
+    "content": "A Metformina é o medicamento de primeira linha para o tratamento da diabetes tipo 2. Ajuda a controlar os níveis de açúcar no sangue, melhorando a forma como o corpo usa a insulina. EFEITOS COLATERAIS: Pode causar desconforto gastrointestinal no início do tratamento."
+  },
+  {
+    "medication_name": "Varfarina",
+    "keywords": ["varfarina", "marevan", "anticoagulante", "coágulo", "sangue"],
+    "content": "A Varfarina é um anticoagulante oral usado para prevenir a formação de coágulos sanguíneos perigosos. REQUER MONITORIZAÇÃO: O seu uso exige exames de sangue regulares (INR) para ajustar a dose corretamente. INTERAÇÕES: Interage com muitos alimentos (especialmente os ricos em vitamina K, como folhas verdes) e outros medicamentos."
+  },
+  {
+    "medication_name": "Clonazepam",
+    "keywords": ["clonazepam", "rivotril", "ansiedade", "calmante", "convulsão"],
+    "content": "O Clonazepam é um benzodiazepínico com propriedades ansiolíticas, anticonvulsivantes e relaxantes musculares. É usado para tratar transtornos de ansiedade, síndrome do pânico e epilepsia. PRECAUÇÕES: Causa sonolência e pode levar à dependência se usado por longos períodos. Não deve ser interrompido abruptamente."
+  },
+  {
+    "medication_name": "Sertralina",
+    "keywords": ["sertralina", "antidepressivo", "depressão", "ansiedade", "pânico"],
+    "content": "A Sertralina é um antidepressivo da classe ISRS, usada para tratar depressão, transtorno de ansiedade social, síndrome do pânico e TOC. EFEITOS: O efeito completo pode levar algumas semanas para ser sentido. Não interrompa o tratamento sem falar com seu médico."
+  },
+  {
+    "medication_name": "Salbutamol",
+    "keywords": ["salbutamol", "aerolin", "asma", "broncodilatador", "falta de ar"],
+    "content": "O Salbutamol é um broncodilatador de ação rápida, usado para aliviar rapidamente os sintomas de asma e outras doenças pulmonares, como a falta de ar e o chiado no peito. É conhecido como 'bombinha de resgate'."
+  },
+  {
+    "medication_name": "Loratadina",
+    "keywords": ["loratadina", "claritin", "antialérgico", "alergia", "rinite", "coceira"],
+    "content": "A Loratadina é um anti-histamínico (antialérgico) usado para aliviar os sintomas de rinite alérgica (espirros, coriza) e urticária (coceira na pele). VANTAGEM: Geralmente não causa sonolência como outros antialérgicos mais antigos."
+  },
+  {
+    "medication_name": "Tadalafila",
+    "keywords": ["tadalafila", "cialis", "disfunção erétil"],
+    "content": "A Tadalafila é usada para tratar a disfunção erétil (impotência sexual) e os sintomas da hiperplasia prostática benigna. CONTRAINDICAÇÕES: Não deve ser usada com medicamentos que contêm nitratos (usados para dor no peito), pois pode causar uma queda perigosa da pressão arterial."
+  },
+  {
+    "medication_name": "Aspirina",
+    "keywords": ["aspirina", "aas", "ácido acetilsalicílico", "dor", "antiagregante"],
+    "content": "A Aspirina (AAS) é usada em baixas doses como antiagregante plaquetário para prevenir ataques cardíacos e derrames. Em doses mais altas, funciona como analgésico e antitérmico. PRECAUÇÕES: Pode irritar o estômago e aumentar o risco de sangramento."
+  },
+  {
+    "medication_name": "Tramadol",
+    "keywords": ["tramadol", "tramal", "analgésico", "dor forte", "opioide"],
+    "content": "O Tramadol é um analgésico opioide usado para tratar dores moderadas a graves. RISCO DE DEPENDÊNCIA: Por ser um opioide, seu uso deve ser estritamente controlado pelo médico para evitar o risco de dependência e abuso."
+  },
+  {
+    "medication_name": "Prednisona",
+    "keywords": ["prednisona", "corticoide", "inflamação", "alergia grave", "artrite"],
+    "content": "A Prednisona é um corticoide potente com forte ação anti-inflamatória e imunossupressora. É usada para tratar uma variedade de condições, como asma grave, reações alérgicas, artrite reumatoide e doenças autoimunes. USO: O tratamento não deve ser interrompido subitamente."
+  },
+  {
+    "medication_name": "Levotiroxina",
+    "keywords": ["levotiroxina", "puran", "syntroid", "tireoide", "hipotireoidismo"],
+    "content": "A Levotiroxina é um hormônio sintético usado para tratar o hipotireoidismo, uma condição em que a glândula tireoide não produz hormônios suficientes. COMO USAR: Deve ser tomada em jejum, com água, pelo menos 30 a 60 minutos antes do café da manhã para garantir a absorção correta."
+  }
+]

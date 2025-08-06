@@ -1,13 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-
-// Importa o novo modelo que acabámos de criar
 const ChatbotIntent = require('../models/ChatbotIntent');
 
-// @route   POST /api/chatbot/query
-// @desc    Recebe uma mensagem e retorna uma resposta consultando o MongoDB
-// @access  Private
 router.post('/query', auth, async (req, res) => {
   const { message } = req.body;
 
@@ -17,17 +12,16 @@ router.post('/query', auth, async (req, res) => {
 
   try {
     const userMessage = message.toLowerCase();
-    
-    // Procura no banco de dados por uma intenção que corresponda à mensagem do utilizador.
-    // Usamos uma expressão regular para encontrar o padrão dentro da mensagem.
     const intents = await ChatbotIntent.find();
     let matchedIntent = null;
 
     for (const intent of intents) {
-      for (const pattern of intent.patterns) {
-        if (userMessage.includes(pattern.toLowerCase())) {
-          matchedIntent = intent;
-          break;
+      if (intent.patterns && Array.isArray(intent.patterns)) {
+        for (const pattern of intent.patterns) {
+          if (userMessage.includes(pattern.toLowerCase())) {
+            matchedIntent = intent;
+            break;
+          }
         }
       }
       if (matchedIntent) {
@@ -36,15 +30,20 @@ router.post('/query', auth, async (req, res) => {
     }
 
     let botResponse;
-    if (matchedIntent) {
-      // Se encontrou uma intenção, escolhe uma resposta aleatória dela
+    if (matchedIntent && matchedIntent.responses && matchedIntent.responses.length > 0) {
       const responses = matchedIntent.responses;
       botResponse = responses[Math.floor(Math.random() * responses.length)];
     } else {
-      // Se não encontrou, busca pela intenção 'default_fallback' no DB
       const fallbackIntent = await ChatbotIntent.findOne({ tag: 'default_fallback' });
-      const fallbackResponses = fallbackIntent.responses;
-      botResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+      
+      // Esta verificação extra impede o "crash"
+      if (fallbackIntent && fallbackIntent.responses && fallbackIntent.responses.length > 0) {
+        const fallbackResponses = fallbackIntent.responses;
+        botResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+      } else {
+        // Resposta final super segura se até o fallback falhar ou não existir
+        botResponse = "Desculpe, estou com um problema técnico e não consigo responder agora.";
+      }
     }
 
     res.json({ response: botResponse });

@@ -1,0 +1,56 @@
+[
+  {
+    "tag": "greeting",
+    "patterns": ["Oi", "Olá", "Bom dia", "Boa tarde", "E aí?", "Saudações"],
+    "responses": ["Olá! Sou o assistente virtual VitaLog. Como posso ajudar hoje?", "Oi! Em que posso ser útil?", "Olá! Pronto para ajudar com seus medicamentos."]
+  },
+  {
+    "tag": "goodbye",
+    "patterns": ["Adeus", "Tchau", "Até logo", "Obrigado e tchau", "Ok, obrigado"],
+    "responses": ["Até logo! Se precisar de algo mais, estarei aqui.", "De nada! Cuide-se bem.", "Tchau! Tenha um ótimo dia."]
+  },
+  {
+    "tag": "thanks",
+    "patterns": ["Obrigado", "Valeu", "Agradecido", "Muito obrigado", "Ajudou muito"],
+    "responses": ["De nada! Fico feliz em ajudar.", "Sempre que precisar!", "Disponha!"]
+  },
+  {
+    "tag": "about",
+    "patterns": ["Quem é você?", "O que você faz?", "Qual seu propósito?", "Como você funciona?"],
+    "responses": ["Eu sou o VitaLog, um assistente virtual projetado para ajudar a gerir suas medicações e responder a perguntas gerais.", "Meu objetivo é fornecer informações e ajudar a usar o aplicativo. Lembre-se que não sou um profissional de saúde."]
+  },
+  {
+    "tag": "drug_info",
+    "patterns": ["O que é Paracetamol?", "Para que serve Ibuprofeno?", "Me fale sobre a Varfarina", "Informações sobre Losartana"],
+    "responses": ["Esta é uma pergunta importante. A melhor fonte para informações detalhadas sobre um medicamento é a bula ou o seu médico/farmacêutico. Você gostaria que eu tentasse buscar uma informação geral?", "Para obter informações precisas e seguras sobre qualquer medicamento, o ideal é sempre consultar um profissional de saúde."]
+  },
+  {
+    "tag": "missed_dose",
+    "patterns": ["Esqueci de tomar meu remédio, e agora?", "Pulei uma dose, o que eu faço?", "O que acontece se eu esquecer um comprimido?"],
+    "responses": ["Se esquecer de tomar uma dose, a recomendação geral é tomar assim que se lembrar. No entanto, se já estiver perto do horário da próxima dose, pule a esquecida. **É crucial que você confirme esta orientação com seu médico ou farmacêutico**, pois a conduta pode variar para cada medicamento.", "A conduta em caso de esquecimento de dose varia muito. Por favor, consulte a bula do seu medicamento ou entre em contato com seu médico para uma orientação segura."]
+  },
+  {
+    "tag": "double_dose",
+    "patterns": ["Posso tomar duas doses de uma vez?", "Tomei uma dose dupla por engano", "Posso dobrar a dose?"],
+    "responses": ["**NÃO!** Nunca tome uma dose dupla para compensar uma que esqueceu. Tomar mais do que a dose prescrita pode ser perigoso. Entre em contato com seu médico ou um centro de toxicologia imediatamente se isso acontecer.", "Superdosagem pode ser muito perigosa. Por favor, procure orientação médica imediatamente."]
+  },
+  {
+    "tag": "interactions",
+    "patterns": ["Posso misturar Paracetamol com Varfarina?", "Tem problema tomar Ibuprofeno com Losartana?", "Quais as interações do meu remédio?"],
+    "responses": ["Este aplicativo verifica as interações automaticamente quando você adiciona um novo medicamento. Para qualquer dúvida sobre combinações, a palavra final deve ser sempre do seu médico. A automedicação pode ser perigosa.", "A segurança é a nossa prioridade. Por favor, discuta qualquer combinação de medicamentos com seu médico ou farmacêutico."]
+  },
+  {
+    "tag": "side_effects",
+    "patterns": ["Quais os efeitos colaterais?", "Este remédio dá sono?", "Posso sentir algo?"],
+    "responses": ["Todos os medicamentos podem ter efeitos colaterais. A lista completa e as probabilidades estão na bula. Se sentir algo incomum, entre em contato com seu médico imediatamente.", "Para conhecer os possíveis efeitos colaterais de um medicamento, o melhor é ler a bula e conversar com seu médico."]
+  },
+  {
+    "tag": "default_fallback",
+    "patterns": [],
+    "responses": [
+      "Desculpe, não entendi a sua pergunta. Poderia tentar de outra forma?",
+      "Não tenho certeza de como responder a isso. Lembre-se que sou um assistente para informações gerais sobre o app.",
+      "Ainda estou a aprender. Tente perguntar sobre horários, interações ou doses esquecidas."
+    ]
+  }
+]

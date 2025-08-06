@@ -23,6 +23,7 @@ app.get('/', (req, res) => res.send('API VitaLog está a rodar...'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/medications', require('./routes/medications'));
 app.use('/api/interactions', require('./routes/interactions')); // <-- CORREÇÃO APLICADA AQUI
+app.use('/api/chatbot', require('./routes/chatbot')); // <-- ADICIONE ESTA LINHA
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor a rodar na porta ${PORT}`));

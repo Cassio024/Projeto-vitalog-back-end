@@ -1,5 +1,5 @@
-// Arquivo: server.js
-// CORRIGIDO: dotenv.config() é a primeira linha e com caminho explícito para robustez.
+// ARQUIVO CORRIGIDO: server.js
+
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
@@ -17,13 +17,12 @@ app.use(cors());
 app.use(express.json({ extended: false }));
 
 // Rota de teste
-app.get('/', (req, res) => res.send('API VitaLog está rodando...'));
+app.get('/', (req, res) => res.send('API VitaLog está a rodar...'));
 
 // Rotas da Aplicação
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/medications', require('./routes/medications'));
+app.use('/api/interactions', require('./routes/interactions')); // <-- CORREÇÃO APLICADA AQUI
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
-
-
+app.listen(PORT, () => console.log(`Servidor a rodar na porta ${PORT}`));

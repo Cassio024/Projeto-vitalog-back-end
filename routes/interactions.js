@@ -1,55 +1,51 @@
-// ARQUIVO ATUALIZADO: routes/interactions.js
+// ARQUIVO ATUALIZADO FINAL: routes/interactions.js
 
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const Medication = require('../models/Medication'); // Precisamos do modelo para consultar o DB
+// Importa o novo modelo de Interação
+const Interaction = require('../models/Interaction');
 
 // @route   POST /api/interactions/check
-// @desc    Verifica interações entre uma lista de medicamentos consultando o banco de dados
+// @desc    Verifica interações consultando a coleção de interações
 // @access  Private
 router.post('/check', auth, async (req, res) => {
   const { medicationNames } = req.body;
 
   if (!medicationNames || medicationNames.length < 2) {
-    // Não há o que verificar se tiver menos de 2 medicamentos
     return res.json({ hasInteraction: false, warnings: [] });
   }
 
   try {
-    // Itera por cada medicamento enviado pelo app
-    for (const medName of medicationNames) {
-      
-      // Busca no banco de dados pelo medicamento atual, ignorando maiúsculas/minúsculas
-      const medInDB = await Medication.findOne({ name: new RegExp('^' + medName + '$', 'i') });
-
-      // Se encontramos o medicamento no DB e ele tem interações listadas
-      if (medInDB && medInDB.interactions && medInDB.interactions.length > 0) {
-        
-        // Agora, verificamos se algum dos OUTROS medicamentos da lista interage com ele
-        for (const otherMedName of medicationNames) {
-          if (medName.toLowerCase() === otherMedName.toLowerCase()) {
-            continue; // Não compara um medicamento com ele mesmo
-          }
-
-          // Procura pela interação na lista de interações do 'medInDB'
-          const interactionFound = medInDB.interactions.find(
-            (interaction) => interaction.with_medication.toLowerCase() === otherMedName.toLowerCase()
-          );
-
-          if (interactionFound) {
-            // INTERAÇÃO ENCONTRADA!
-            // Retorna o aviso do banco de dados e para a execução.
-            return res.json({
-              hasInteraction: true,
-              warnings: [interactionFound.warning]
-            });
-          }
-        }
+    // Cria todas as combinações de pares possíveis a partir da lista de medicamentos
+    const pairs = [];
+    for (let i = 0; i < medicationNames.length; i++) {
+      for (let j = i + 1; j < medicationNames.length; j++) {
+        pairs.push([medicationNames[i], medicationNames[j]]);
       }
     }
 
-    // Se todos os loops terminarem, nenhuma interação foi encontrada.
+    // Para cada par, verifica se existe uma interação no banco de dados
+    for (const pair of pairs) {
+      // Cria uma busca case-insensitive para os dois medicamentos no par
+      const med1Regex = new RegExp(`^${pair[0]}$`, 'i');
+      const med2Regex = new RegExp(`^${pair[1]}$`, 'i');
+
+      // Procura um documento de interação que contenha AMBOS os medicamentos
+      const interactionFound = await Interaction.findOne({
+        medications: { $all: [med1Regex, med2Regex] }
+      });
+
+      if (interactionFound) {
+        // INTERAÇÃO ENCONTRADA! Retorna o aviso e para.
+        return res.json({
+          hasInteraction: true,
+          warnings: [interactionFound.warning]
+        });
+      }
+    }
+
+    // Se o loop terminar, nenhuma interação foi encontrada.
     return res.json({ hasInteraction: false, warnings: [] });
 
   } catch (err) {
